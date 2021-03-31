@@ -1,8 +1,10 @@
 package com.ywh.spring.ioc;
 
+import com.ywh.spring.aop.AOP;
 import com.ywh.spring.core.BeanContainer;
 import com.ywh.spring.core.TestController;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -12,15 +14,16 @@ import org.junit.Test;
 @Slf4j
 public class IOCTest {
 
+
     /**
      *
      */
     @Test
-    public void doIocTest() {
+    public void doIOCTest() {
         BeanContainer beanContainer = BeanContainer.getInstance();
-        beanContainer.loadBeans("com.ywh");
-        new IOC().doIoc();
-        TestController controller = (TestController) beanContainer.getBean(TestController.class);
-        controller.hello();
+        beanContainer.loadBeans();
+        new IOC().doIOC();
+        TestController controller = BeanContainer.getInstance().getBean(TestController.class);
+        Assert.assertEquals("ywh", controller.say("ywh"));
     }
 }

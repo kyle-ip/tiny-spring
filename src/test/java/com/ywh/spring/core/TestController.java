@@ -8,8 +8,9 @@ import lombok.extern.slf4j.Slf4j;
  * @author ywh
  * @since 31/03/2021
  */
-@Controller
+
 @Slf4j
+@Controller
 public class TestController {
 
     /**
@@ -20,8 +21,11 @@ public class TestController {
 
     /**
      *
+     * @param word
+     * @return
      */
-    public void hello() {
-        log.info(testService.say());
+    public String say(String word) {
+        System.out.println(word);
+        return testService.say(word);
     }
 }
