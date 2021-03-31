@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 
 /**
- * IoC 启动类
+ * IOC 启动类
  *
  * @author ywh
  * @since 31/03/2021
@@ -18,21 +18,35 @@ public class IOC {
      */
     private final BeanContainer beanContainer;
 
+    /**
+     *
+     */
     public IOC() {
         beanContainer = BeanContainer.getInstance();
     }
 
     /**
-     * 执行 Ioc
+     *
+     * @param basePackage
      */
-    public void doIoc() {
-        for (Class<?> clz : beanContainer.getClasses()) {
+    public void doIOC(String basePackage) {
+        BeanContainer beanContainer = BeanContainer.getInstance();
+        beanContainer.loadBeans(basePackage);
+        doIOC();
+    }
+
+    /**
+     * 执行 IOC
+     */
+    public void doIOC() {
+        for (Class<?> clazz : beanContainer.getClasses()) {
             // 从 Bean 容器中获取所有的类及其对应的 Bean。
-            final Object bean = beanContainer.getBean(clz);
-            Field[] fields = clz.getDeclaredFields();
+            final Object bean = beanContainer.getBean(clazz);
+            Field[] fields = clazz.getDeclaredFields();
 
             // 取出 Bean 所有的域。
             for (Field field : fields) {
+
                 // 如果该 Bean 中的域被添加上 Autowired 注解，则获取其类型。
                 if (field.isAnnotationPresent(Autowired.class)) {
                     final Class<?> fieldClass = field.getType();
@@ -57,22 +71,21 @@ public class IOC {
     /**
      * 根据 Class 获取其实例或者实现类
      *
-     * @param clz Class
+     * @param clazz Class
      * @return 实例或者实现类
      */
-    private Object getClassInstance(final Class<?> clz) {
+    private <T> T getClassInstance(final Class<T> clazz) {
         return Optional
             // 从 Bean 容器中获取 Bean 对象实例。
-            .ofNullable(beanContainer.getBean(clz))
-            // 获取失败，则可能为接口，因此获取接口的实现类（取第一个）。
+            .ofNullable(beanContainer.getBean(clazz))
+            // 获取失败，可能为接口，因此获取接口的实现类（取第一个）。
             .orElseGet(() -> {
-                // 获取接口的实现类
-                Class<?> implementClass = beanContainer.getClassesBySuper(clz)
+                Class<?> implementClass = beanContainer.getClassesBySuper(clazz)
                     .stream()
                     .findFirst()
                     .orElse(null);
                 if (null != implementClass) {
-                    return beanContainer.getBean(implementClass);
+                    return (T) beanContainer.getBean(implementClass);
                 }
                 return null;
             });

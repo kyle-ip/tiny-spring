@@ -11,10 +11,11 @@ public class TestServiceImpl implements TestService {
 
     /**
      *
+     * @param word
      * @return
      */
     @Override
-    public String say() {
-        return "Hello, World!";
+    public String say(String word) {
+        return word;
     }
 }

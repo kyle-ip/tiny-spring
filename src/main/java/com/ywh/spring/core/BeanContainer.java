@@ -1,5 +1,6 @@
 package com.ywh.spring.core;
 
+import com.ywh.spring.aop.annotation.Aspect;
 import com.ywh.spring.core.annotation.Component;
 import com.ywh.spring.core.annotation.Controller;
 import com.ywh.spring.core.annotation.Repository;
@@ -28,6 +29,7 @@ public class BeanContainer {
      * 容器单例
      */
     private enum ContainerHolder {
+
         /**
          * 单例对象
          */
@@ -59,12 +61,12 @@ public class BeanContainer {
     /**
      * 加载 Bean 的注解列表
      */
-    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATIONS = Arrays.asList(
         Component.class,
         Controller.class,
         Service.class,
-        Repository.class
-//        , Aspect.class
+        Repository.class,
+        Aspect.class
     );
 
     /**
@@ -77,53 +79,57 @@ public class BeanContainer {
     }
 
     /**
+     *
+     * @return
+     */
+    public List<Class<? extends Annotation>> getBeanAnnotations() {
+        return BEAN_ANNOTATIONS;
+    }
+
+    /**
+     *
+     */
+    public void loadBeans() {
+        loadBeans("");
+    }
+
+    /**
      * 扫描加载所有 Bean
      *
      * @param basePackage 包名
      */
     public void loadBeans(String basePackage) {
         if (isLoadBean) {
-            log.warn("bean已经加载");
             return;
         }
 
         // 扫描根包下的所有类，判断其是否添加了组件注解，是则添加到集合中。
-        Set<Class<?>> classSet = ClassUtil.getPackageClass(basePackage);
-        classSet.stream()
-            .filter(clz -> {
-                for (Class<? extends Annotation> annotation : BEAN_ANNOTATION) {
-                    if (clz.isAnnotationPresent(annotation)) {
+        ClassUtil.getPackageClass(basePackage).stream()
+            .filter(clazz -> {
+                for (Class<? extends Annotation> annotation : BEAN_ANNOTATIONS) {
+                    if (clazz.isAnnotationPresent(annotation)) {
                         return true;
                     }
                 }
                 return false;
             })
-            .forEach(clz -> beanMap.put(clz, ClassUtil.newInstance(clz)));
+            .forEach(clazz -> beanMap.put(clazz, ClassUtil.newInstance(clazz)));
 
         // 添加成功修改标记为 true。
         isLoadBean = true;
     }
 
     /**
-     * 是否加载 Bean
-     *
-     * @return 是否加载
-     */
-    public boolean isLoadBean() {
-        return isLoadBean;
-    }
-
-    /**
      * 获取 Bean 实例
      *
-     * @param clz Class类型
+     * @param clazz Class类型
      * @return Bean实例
      */
-    public Object getBean(Class<?> clz) {
-        if (null == clz) {
+    public <T> T getBean(Class<T> clazz) {
+        if (null == clazz) {
             return null;
         }
-        return beanMap.get(clz);
+        return (T) beanMap.get(clazz);
     }
 
     /**
@@ -138,21 +144,20 @@ public class BeanContainer {
     /**
      * 添加一个 Bean 实例
      *
-     * @param clz  Class 类型
+     * @param clazz  Class 类型
      * @param bean Bean 实例
-     * @return 原有的 Bean 实例, 没有则返回 null
      */
-    public Object addBean(Class<?> clz, Object bean) {
-        return beanMap.put(clz, bean);
+    public void addBean(Class<?> clazz, Object bean) {
+        beanMap.put(clazz, bean);
     }
 
     /**
      * 移除一个 Bean 实例
      *
-     * @param clz Class 类型
+     * @param clazz Class 类型
      */
-    public void removeBean(Class<?> clz) {
-        beanMap.remove(clz);
+    public void removeBean(Class<?> clazz) {
+        beanMap.remove(clazz);
     }
 
     /**
@@ -182,7 +187,7 @@ public class BeanContainer {
     public Set<Class<?>> getClassesByAnnotation(Class<? extends Annotation> annotation) {
         return beanMap.keySet()
             .stream()
-            .filter(clz -> clz.isAnnotationPresent(annotation))
+            .filter(clazz -> clazz.isAnnotationPresent(annotation))
             .collect(Collectors.toSet());
     }
 
@@ -192,11 +197,12 @@ public class BeanContainer {
      * @param interfaceClass 接口 Class 或者父类 Class
      * @return Class 集合
      */
-    public Set<Class<?>> getClassesBySuper(Class<?> interfaceClass) {
+    public <T> Set<Class<T>> getClassesBySuper(Class<T> interfaceClass) {
         return beanMap.keySet()
             .stream()
             .filter(interfaceClass::isAssignableFrom)
-            .filter(clz -> !clz.equals(interfaceClass))
+            .filter(clazz -> !clazz.equals(interfaceClass))
+            .map(v -> (Class<T>) v)
             .collect(Collectors.toSet());
     }
 }

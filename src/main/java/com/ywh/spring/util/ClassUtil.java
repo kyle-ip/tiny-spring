@@ -61,25 +61,6 @@ public class ClassUtil {
     /**
      * 实例化 class
      *
-     * @param className class 全名
-     * @param <T>       class 的类型
-     * @return 类的实例化
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T newInstance(String className) {
-        try {
-            Class<?> clazz = loadClass(className);
-            return (T) clazz.getDeclaredConstructor().newInstance();
-            // deprecated in Java 9: return (T) clazz.newInstance();
-        } catch (Exception e) {
-            log.error("newInstance error", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * 实例化 class
-     *
      * @param clazz Class
      * @param <T>   class的类型
      * @return 类的实例化
@@ -93,17 +74,6 @@ public class ClassUtil {
             log.error("newInstance error", e);
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * 设置类的属性值
-     *
-     * @param field  属性
-     * @param target 类实例
-     * @param value  值
-     */
-    public static void setField(Field field, Object target, Object value) {
-        setField(field, target, value, true);
     }
 
     /**
@@ -125,7 +95,7 @@ public class ClassUtil {
     }
 
     /**
-     * 获取包下类集合
+     * 获取包下的类集合
      *
      * @param basePackage 包的路径
      * @return 类集合
@@ -145,7 +115,7 @@ public class ClassUtil {
                     .map(path -> getClassByPath(path, basePath, basePackage))
                     .collect(Collectors.toSet());
             } else if (url.getProtocol().equalsIgnoreCase(JAR_PROTOCOL)) {
-                // 若在 jar 包中，则解析 jar 包中的 entry
+                // 若在 jar 包中，则解析 jar 包中的 entry。
                 return ((JarURLConnection) url.openConnection()).getJarFile()
                     .stream()
                     .filter(jarEntry -> jarEntry.getName().endsWith(".class"))

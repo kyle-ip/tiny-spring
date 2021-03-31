@@ -10,6 +10,7 @@
 tiny-spring is a simplified framework for learning fundamental principles of Spring Framework.
 
 - IOC
+- AOP
 
 ## License
 

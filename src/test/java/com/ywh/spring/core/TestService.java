@@ -5,9 +5,11 @@ package com.ywh.spring.core;
  * @since 31/03/2021
  */
 public interface TestService {
+
     /**
      *
+     * @param word
      * @return
      */
-    String say();
+    String say(String word);
 }
