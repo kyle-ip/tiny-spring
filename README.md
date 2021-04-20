@@ -7,12 +7,12 @@
 
 ## Introduction
 
-tiny-spring is a simplified framework for learning fundamental principles of Spring Framework.
+tiny-spring is a simplified framework for learning fundamental principles of Spring.
 
-- IOC
+- IOC (Bean Container)
 - AOP (CGLIB, AspectJ)
-- MVC 
-- Embed Tomcat
+- Web MVC 
+- Quick Launch Starter (Embed Tomcat)
 
 ## Example
 import dependency (maven): 
@@ -54,6 +54,7 @@ startup:
 
 2021-04-20 21:53:39,657 [INFO] -- c.y.s.m.s.TomcatServer         Tomcat: application resolved root folder: [C:\Project\other-project\tiny-spring\example]
 2021-04-20 21:53:39,659 [INFO] -- c.y.s.m.s.TomcatServer         Tomcat: configuring app with basedir: [C:\Project\other-project\tiny-spring\example\src\main\resources]
+...
 ```
 
 ## License
