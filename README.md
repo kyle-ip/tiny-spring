@@ -25,6 +25,8 @@ import dependency (maven):
 ```
 create main class:
 ```java
+import com.ywh.spring.SpringApplication;
+
 public class APP {
     public static void main(String[] args) {
         SpringApplication.run(APP.class);
@@ -33,6 +35,10 @@ public class APP {
 ```
 add controller:
 ```java
+import com.ywh.spring.core.annotation.Controller;
+import com.ywh.spring.ioc.Autowired;
+
+@Controller
 public class TestController {
     @RequestMapping(value = "index")
     @ResponseBody

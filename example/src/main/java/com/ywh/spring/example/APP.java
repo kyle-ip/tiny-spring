@@ -1,6 +1,5 @@
 package com.ywh.spring.example;
 
-
 import com.ywh.spring.SpringApplication;
 
 /**
