@@ -62,14 +62,14 @@ public class ClassUtil {
      * 实例化 class
      *
      * @param clz Class
-     * @param <T>   class的类型
+     * @param <T> class的类型
      * @return 类的实例化
      */
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(Class<?> clz) {
         try {
-            return (T) clz.getDeclaredConstructor().newInstance();
             // deprecated in Java 9: return (T) clz.newInstance();
+            return (T) clz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             log.error("newInstance error", e);
             throw new RuntimeException(e);

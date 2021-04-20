@@ -21,8 +21,10 @@
         <cglib.version>3.2.6</cglib.version>
         <aspectj.version>1.8.13</aspectj.version>
         <junit.version>4.12</junit.version>
+        <tomcat.version>8.5.31</tomcat.version>
+        <jstl.version>1.2</jstl.version>
+        <fastjson.version>1.2.47</fastjson.version>
     </properties>
-
 
     <dependencies>
         <dependency>
@@ -44,6 +46,22 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

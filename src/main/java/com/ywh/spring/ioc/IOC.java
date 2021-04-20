@@ -26,7 +26,6 @@ public class IOC {
     }
 
     /**
-     *
      * @param basePackage
      */
     public void doIOC(String basePackage) {

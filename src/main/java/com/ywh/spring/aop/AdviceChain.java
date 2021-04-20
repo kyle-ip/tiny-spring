@@ -1,6 +1,5 @@
-package com.ywh.spring;
+package com.ywh.spring.aop;
 
-import com.ywh.spring.aop.ProxyAdvisor;
 import lombok.Getter;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -49,7 +48,8 @@ public class AdviceChain {
      */
     private int adviceIndex = 0;
 
-    public AdviceChain(Class<?> targetClass, Object target, Method method, Object[] args, MethodProxy methodProxy, List<ProxyAdvisor> proxyList) {
+    public AdviceChain(Class<?> targetClass, Object target, Method method, Object[] args, MethodProxy methodProxy,
+                       List<ProxyAdvisor> proxyList) {
         this.targetClass = targetClass;
         this.target = target;
         this.method = method;
@@ -69,6 +69,7 @@ public class AdviceChain {
             // 如果当前方法不匹配切点，则略过该代理通知类。
             adviceIndex++;
         }
-        return adviceIndex < proxyList.size()? proxyList.get(adviceIndex++).doProxy(this): methodProxy.invokeSuper(target, args);
+        return adviceIndex < proxyList.size() ? proxyList.get(adviceIndex++).doProxy(this) :
+            methodProxy.invokeSuper(target, args);
     }
 }

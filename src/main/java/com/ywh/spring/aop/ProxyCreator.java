@@ -1,6 +1,5 @@
 package com.ywh.spring.aop;
 
-import com.ywh.spring.AdviceChain;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -44,7 +43,6 @@ public class ProxyCreator {
         private List<ProxyAdvisor> proxyList;
 
         /**
-         *
          * @param targetClass
          * @param proxyList
          */
@@ -54,7 +52,6 @@ public class ProxyCreator {
         }
 
         /**
-         *
          * @param target
          * @param method
          * @param args

@@ -79,7 +79,6 @@ public class BeanContainer {
     }
 
     /**
-     *
      * @return
      */
     public List<Class<? extends Annotation>> getBeanAnnotations() {
