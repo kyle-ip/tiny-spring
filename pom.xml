@@ -12,7 +12,7 @@
     <description>Tiny Web Framework</description>
 
     <properties>
-        <revision>0.1</revision>
+        <revision>0.0.1-alpha</revision>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,6 +24,7 @@
         <tomcat.version>8.5.31</tomcat.version>
         <jstl.version>1.2</jstl.version>
         <fastjson.version>1.2.47</fastjson.version>
+        <jcabi-log.version>0.17.1</jcabi-log.version>
     </properties>
 
     <dependencies>
@@ -46,6 +47,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-log</artifactId>
+            <version>${jcabi-log.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -115,6 +121,20 @@
                                 <phase>package</phase>
                                 <goals>
                                     <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
                                 </goals>
                             </execution>
                         </executions>

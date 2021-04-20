@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * PathInfo 存储http相关信息
+ * 请求相关信息
  *
  * @author ywh
  * @since 4/20/2021
@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PathInfo {
     /**
-     * http请求方法
+     * 请求方法
      */
     private String httpMethod;
 
     /**
-     * http请求路径
+     * 请求路径
      */
     private String httpPath;
 }

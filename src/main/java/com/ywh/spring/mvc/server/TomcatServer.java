@@ -1,6 +1,6 @@
 package com.ywh.spring.mvc.server;
 
-import com.ywh.spring.APP;
+import com.ywh.spring.SpringApplication;
 import com.ywh.spring.Configuration;
 import com.ywh.spring.mvc.DispatcherServlet;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class TomcatServer implements Server {
     private Tomcat tomcat;
 
     public TomcatServer() {
-        new TomcatServer(APP.getConfiguration());
+        new TomcatServer(SpringApplication.getConfiguration());
     }
 
     public TomcatServer(Configuration configuration) {
@@ -40,7 +40,7 @@ public class TomcatServer implements Server {
                 webContentFolder = Files.createTempDirectory("default-doc-base").toFile();
             }
 
-            log.info("Tomcat:configuring app with basedir: [{}]", webContentFolder.getAbsolutePath());
+            log.info("Tomcat: configuring app with basedir: [{}]", webContentFolder.getAbsolutePath());
             StandardContext ctx = (StandardContext) tomcat.addWebapp(configuration.getContextPath(),
                 webContentFolder.getAbsolutePath());
             ctx.setParentClassLoader(this.getClass().getClassLoader());
@@ -73,15 +73,21 @@ public class TomcatServer implements Server {
     private File getRootFolder(Configuration configuration) {
         try {
             File root;
-            String runningJarPath =
-                configuration.getBootClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath().replaceAll("\\\\", "/");
+            String runningJarPath = configuration
+                .getBootClass()
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()
+                .getPath()
+                .replaceAll("\\\\", "/");
             int lastIndexOf = runningJarPath.lastIndexOf("/target/");
             if (lastIndexOf < 0) {
                 root = new File("");
             } else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            log.info("Tomcat:application resolved root folder: [{}]", root.getAbsolutePath());
+            log.info("Tomcat: application resolved root folder: [{}]", root.getAbsolutePath());
             return root;
         } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);

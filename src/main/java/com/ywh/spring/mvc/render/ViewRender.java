@@ -1,6 +1,6 @@
 package com.ywh.spring.mvc.render;
 
-import com.ywh.spring.APP;
+import com.ywh.spring.SpringApplication;
 import com.ywh.spring.mvc.RequestHandlerChain;
 import com.ywh.spring.mvc.bean.ModelAndView;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class ViewRender implements Render {
         String path = mv.getView();
         Map<String, Object> model = mv.getModel();
         model.forEach(req::setAttribute);
-        req.getRequestDispatcher(APP.getConfiguration().getViewPath() + path).forward(req, resp);
+        req.getRequestDispatcher(SpringApplication.getConfiguration().getViewPath() + path).forward(req, resp);
 
     }
 }

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
-public final class APP {
+public final class SpringApplication {
 
     /**
      * 全局配置
@@ -45,7 +45,7 @@ public final class APP {
      * @param port      服务器端口
      */
     public static void run(Class<?> bootClass, int port) {
-        new APP().start(Configuration.builder().bootClass(bootClass).serverPort(port).build());
+        new SpringApplication().start(Configuration.builder().bootClass(bootClass).serverPort(port).build());
     }
 
     /**
@@ -54,7 +54,7 @@ public final class APP {
      * @param configuration 配置
      */
     public static void run(Configuration configuration) {
-        new APP().start(configuration);
+        new SpringApplication().start(configuration);
     }
 
     /**
@@ -82,21 +82,26 @@ public final class APP {
      */
     private void start(Configuration configuration) {
         try {
-            APP.configuration = configuration;
+            SpringApplication.configuration = configuration;
             String basePackage = configuration.getBootClass().getPackage().getName();
             BeanContainer.getInstance().loadBeans(basePackage);
 
             new AOP().doAOP();
             new IOC().doIOC();
 
+            System.out.println("\n" +
+                " ___________.__                 _________            .__                \n" +
+                " \\__    ___/|__| ____ ___.__.  /   _____/____________|__| ____    ____  \n" +
+                "   |    |   |  |/    <   |  |  \\_____  \\\\____ \\_  __ \\  |/    \\  / ___\\ \n" +
+                "   |    |   |  |   |  \\___  |  /        \\  |_> >  | \\/  |   |  \\/ /_/  >\n" +
+                "   |____|   |__|___|  / ____| /_______  /   __/|__|  |__|___|  /\\___  / \n" +
+                "                    \\/\\/              \\/|__|                 \\//_____/\n" +
+                " :: tiny-spring ::                                         (0.0.1-alpha)\n"
+            );
             server = new TomcatServer(configuration);
             server.startServer();
         } catch (Exception e) {
             log.error("APP 启动失败", e);
         }
-    }
-
-    public static void main(String[] args) {
-        run(APP.class);
     }
 }

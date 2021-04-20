@@ -1,7 +1,7 @@
 package com.ywh.spring.mvc.handler;
 
 
-import com.ywh.spring.APP;
+import com.ywh.spring.SpringApplication;
 import com.ywh.spring.mvc.RequestHandlerChain;
 
 import javax.servlet.RequestDispatcher;
@@ -49,6 +49,6 @@ public class JspHandler implements Handler {
      * @return 是否为jsp资源
      */
     private boolean isPageView(String url) {
-        return url.startsWith(APP.getConfiguration().getViewPath());
+        return url.startsWith(SpringApplication.getConfiguration().getViewPath());
     }
 }

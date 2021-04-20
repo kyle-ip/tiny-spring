@@ -1,6 +1,6 @@
 package com.ywh.spring.mvc.handler;
 
-import com.ywh.spring.APP;
+import com.ywh.spring.SpringApplication;
 import com.ywh.spring.mvc.RequestHandlerChain;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,6 +56,6 @@ public class SimpleUrlHandler implements Handler {
      * @return 是否为静态资源
      */
     private boolean isStaticResource(String url) {
-        return url.startsWith(APP.getConfiguration().getAssetPath());
+        return url.startsWith(SpringApplication.getConfiguration().getAssetPath());
     }
 }
