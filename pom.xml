@@ -19,6 +19,7 @@
         <lombok.version>1.18.6</lombok.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <cglib.version>3.2.6</cglib.version>
+        <aspectj.version>1.8.13</aspectj.version>
         <junit.version>4.12</junit.version>
     </properties>
 
@@ -33,6 +34,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

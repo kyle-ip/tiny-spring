@@ -1,6 +1,5 @@
 package com.ywh.spring.ioc;
 
-import com.ywh.spring.aop.AOP;
 import com.ywh.spring.core.BeanContainer;
 import com.ywh.spring.core.TestController;
 import lombok.extern.slf4j.Slf4j;

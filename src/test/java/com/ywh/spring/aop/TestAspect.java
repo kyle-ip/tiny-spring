@@ -2,7 +2,6 @@ package com.ywh.spring.aop;
 
 import com.ywh.spring.aop.advice.AroundAdvice;
 import com.ywh.spring.aop.annotation.Aspect;
-import com.ywh.spring.core.annotation.Controller;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
@@ -12,7 +11,7 @@ import java.lang.reflect.Method;
  * @since 31/03/2021
  */
 @Slf4j
-@Aspect(target = Controller.class)
+@Aspect(pointcut = "within(com.ywh.spring.core.TestController)")
 public class TestAspect implements AroundAdvice {
 
     /**

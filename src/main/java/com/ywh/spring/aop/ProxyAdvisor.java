@@ -1,5 +1,6 @@
 package com.ywh.spring.aop;
 
+import com.ywh.spring.AdviceChain;
 import com.ywh.spring.aop.advice.Advice;
 import com.ywh.spring.aop.advice.AfterReturningAdvice;
 import com.ywh.spring.aop.advice.MethodBeforeAdvice;
@@ -8,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
 
@@ -30,17 +30,34 @@ public class ProxyAdvisor {
     private Advice advice;
 
     /**
-     * 执行代理方法
+     * AspectJ 表达式切点匹配器
      */
-    public Object doProxy(Object target, Class<?> targetClass, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+    private ProxyPointcut pointcut;
+
+
+    /**
+     * 执行顺序
+     */
+    private int order;
+
+    /**
+     * 执行代理方法
+     *
+     * @param adviceChain 通知链
+     * @return 目标方法执行结果
+     * @throws Throwable Throwable
+     */
+    public Object doProxy(AdviceChain adviceChain) throws Throwable {
         Object result = null;
+        Class<?> targetClass = adviceChain.getTargetClass();
+        Method method = adviceChain.getMethod();
+        Object[] args = adviceChain.getArgs();
 
         if (advice instanceof MethodBeforeAdvice) {
             ((MethodBeforeAdvice) advice).before(targetClass, method, args);
         }
         try {
-            // 执行目标类的方法。
-            result = proxy.invokeSuper(target, args);
+            result = adviceChain.doAdviceChain();
             if (advice instanceof AfterReturningAdvice) {
                 ((AfterReturningAdvice) advice).afterReturning(targetClass, result, method, args);
             }

@@ -39,10 +39,10 @@ public class IOC {
      * 执行 IOC
      */
     public void doIOC() {
-        for (Class<?> clazz : beanContainer.getClasses()) {
+        for (Class<?> clz : beanContainer.getClasses()) {
             // 从 Bean 容器中获取所有的类及其对应的 Bean。
-            final Object bean = beanContainer.getBean(clazz);
-            Field[] fields = clazz.getDeclaredFields();
+            final Object bean = beanContainer.getBean(clz);
+            Field[] fields = clz.getDeclaredFields();
 
             // 取出 Bean 所有的域。
             for (Field field : fields) {
@@ -71,16 +71,16 @@ public class IOC {
     /**
      * 根据 Class 获取其实例或者实现类
      *
-     * @param clazz Class
+     * @param clz Class
      * @return 实例或者实现类
      */
-    private <T> T getClassInstance(final Class<T> clazz) {
+    private <T> T getClassInstance(final Class<T> clz) {
         return Optional
             // 从 Bean 容器中获取 Bean 对象实例。
-            .ofNullable(beanContainer.getBean(clazz))
+            .ofNullable(beanContainer.getBean(clz))
             // 获取失败，可能为接口，因此获取接口的实现类（取第一个）。
             .orElseGet(() -> {
-                Class<?> implementClass = beanContainer.getClassesBySuper(clazz)
+                Class<?> implementClass = beanContainer.getClassesBySuper(clz)
                     .stream()
                     .findFirst()
                     .orElse(null);

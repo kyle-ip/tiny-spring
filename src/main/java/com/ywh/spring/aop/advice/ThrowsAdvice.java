@@ -13,10 +13,10 @@ public interface ThrowsAdvice extends Advice {
     /**
      * 异常方法
      *
-     * @param clazz    目标类
+     * @param clz    目标类
      * @param method 目标方法
      * @param args   目标方法参数
      * @param e      抛出异常
      */
-    void afterThrowing(Class<?> clazz, Method method, Object[] args, Throwable e);
+    void afterThrowing(Class<?> clz, Method method, Object[] args, Throwable e);
 }

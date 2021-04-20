@@ -13,10 +13,10 @@ public interface MethodBeforeAdvice extends Advice {
     /**
      * 前置方法
      *
-     * @param clazz    目标类
+     * @param clz    目标类
      * @param method 目标方法
      * @param args   目标方法参数
      * @throws Throwable Throwable
      */
-    void before(Class<?> clazz, Method method, Object[] args) throws Throwable;
+    void before(Class<?> clz, Method method, Object[] args) throws Throwable;
 }

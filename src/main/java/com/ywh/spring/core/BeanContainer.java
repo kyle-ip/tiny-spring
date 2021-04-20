@@ -105,15 +105,15 @@ public class BeanContainer {
 
         // 扫描根包下的所有类，判断其是否添加了组件注解，是则添加到集合中。
         ClassUtil.getPackageClass(basePackage).stream()
-            .filter(clazz -> {
+            .filter(clz -> {
                 for (Class<? extends Annotation> annotation : BEAN_ANNOTATIONS) {
-                    if (clazz.isAnnotationPresent(annotation)) {
+                    if (clz.isAnnotationPresent(annotation)) {
                         return true;
                     }
                 }
                 return false;
             })
-            .forEach(clazz -> beanMap.put(clazz, ClassUtil.newInstance(clazz)));
+            .forEach(clz -> beanMap.put(clz, ClassUtil.newInstance(clz)));
 
         // 添加成功修改标记为 true。
         isLoadBean = true;
@@ -122,14 +122,14 @@ public class BeanContainer {
     /**
      * 获取 Bean 实例
      *
-     * @param clazz Class类型
+     * @param clz Class类型
      * @return Bean实例
      */
-    public <T> T getBean(Class<T> clazz) {
-        if (null == clazz) {
+    public <T> T getBean(Class<T> clz) {
+        if (null == clz) {
             return null;
         }
-        return (T) beanMap.get(clazz);
+        return (T) beanMap.get(clz);
     }
 
     /**
@@ -144,20 +144,20 @@ public class BeanContainer {
     /**
      * 添加一个 Bean 实例
      *
-     * @param clazz  Class 类型
+     * @param clz  Class 类型
      * @param bean Bean 实例
      */
-    public void addBean(Class<?> clazz, Object bean) {
-        beanMap.put(clazz, bean);
+    public void addBean(Class<?> clz, Object bean) {
+        beanMap.put(clz, bean);
     }
 
     /**
      * 移除一个 Bean 实例
      *
-     * @param clazz Class 类型
+     * @param clz Class 类型
      */
-    public void removeBean(Class<?> clazz) {
-        beanMap.remove(clazz);
+    public void removeBean(Class<?> clz) {
+        beanMap.remove(clz);
     }
 
     /**
@@ -187,7 +187,7 @@ public class BeanContainer {
     public Set<Class<?>> getClassesByAnnotation(Class<? extends Annotation> annotation) {
         return beanMap.keySet()
             .stream()
-            .filter(clazz -> clazz.isAnnotationPresent(annotation))
+            .filter(clz -> clz.isAnnotationPresent(annotation))
             .collect(Collectors.toSet());
     }
 
@@ -201,7 +201,7 @@ public class BeanContainer {
         return beanMap.keySet()
             .stream()
             .filter(interfaceClass::isAssignableFrom)
-            .filter(clazz -> !clazz.equals(interfaceClass))
+            .filter(clz -> !clz.equals(interfaceClass))
             .map(v -> (Class<T>) v)
             .collect(Collectors.toSet());
     }

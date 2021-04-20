@@ -6,15 +6,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 执行顺序
+ *
  * @author ywh
- * @since 31/03/2021
+ * @since 4/20/2021
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Aspect {
+public @interface Order {
 
     /**
-     * 切点表达式
+     * 值越大越先执行
      */
-    String pointcut() default "";
+    int value() default 0;
 }
