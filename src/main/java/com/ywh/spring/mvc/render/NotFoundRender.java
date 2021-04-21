@@ -5,7 +5,7 @@ import com.ywh.spring.mvc.RequestHandlerChain;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 渲染404
+ * 渲染 404
  *
  * @author ywh
  * @since 4/20/2021

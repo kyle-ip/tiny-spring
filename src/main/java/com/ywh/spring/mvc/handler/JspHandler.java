@@ -8,8 +8,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 
 /**
- * jsp请求处理
- * 主要负责jsp资源请求
+ * JSP 请求处理
  *
  * @author ywh
  * @since 4/20/2021

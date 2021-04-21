@@ -21,20 +21,18 @@ import java.util.Iterator;
 @Slf4j
 public class RequestHandlerChain {
     /**
-     * Handler迭代器
+     * Handler 迭代器
+     *
      * {@link Handler}
      */
     private Iterator<Handler> handlerIt;
 
     /**
-     * 请求request
-     * {@link HttpServletRequest}
+     *
      */
     private HttpServletRequest request;
 
     /**
-     * 请求response
-     * {@link HttpServletResponse}
      */
     private HttpServletResponse response;
 
@@ -58,6 +56,12 @@ public class RequestHandlerChain {
      */
     private Render render;
 
+    /**
+     *
+     * @param handlerIt
+     * @param request
+     * @param response
+     */
     public RequestHandlerChain(Iterator<Handler> handlerIt, HttpServletRequest request, HttpServletResponse response) {
         this.handlerIt = handlerIt;
         this.request = request;

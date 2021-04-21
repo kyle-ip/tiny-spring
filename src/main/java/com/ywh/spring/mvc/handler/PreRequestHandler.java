@@ -3,6 +3,8 @@ package com.ywh.spring.mvc.handler;
 import com.ywh.spring.mvc.RequestHandlerChain;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.ywh.spring.util.CommonUtil.SLASH;
+
 /**
  * 请求预处理
  *
@@ -17,7 +19,7 @@ public class PreRequestHandler implements Handler {
         // 设置请求编码方式
         handlerChain.getRequest().setCharacterEncoding("UTF-8");
         String requestPath = handlerChain.getRequestPath();
-        if (requestPath.length() > 1 && requestPath.endsWith("/")) {
+        if (requestPath.length() > 1 && requestPath.endsWith(SLASH)) {
             handlerChain.setRequestPath(requestPath.substring(0, requestPath.length() - 1));
         }
         log.info("[tiny-spring] {} {}", handlerChain.getRequestMethod(), handlerChain.getRequestPath());

@@ -5,7 +5,7 @@ import com.ywh.spring.mvc.RequestHandlerChain;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 渲染500
+ * 渲染 500
  *
  * @author ywh
  * @since 4/20/2021

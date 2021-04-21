@@ -21,8 +21,13 @@ import java.util.stream.Collectors;
  * @since 31/03/2021
  */
 @Slf4j
-public class ClassUtil {
+public class CommonUtil {
 
+    public static final String DOT = ".";
+
+    public static final String SLASH = "/";
+
+    public static final String EMPTY = "";
 
     /**
      * file 形式 url 协议
@@ -33,6 +38,9 @@ public class ClassUtil {
      * jar 形式 url 协议
      */
     public static final String JAR_PROTOCOL = "jar";
+
+    private CommonUtil() {
+    }
 
     /**
      * 获取 ClassLoader
@@ -61,6 +69,8 @@ public class ClassUtil {
     /**
      * 实例化 class
      *
+     * deprecated in Java 9: return (T) clz.newInstance();
+     *
      * @param clz Class
      * @param <T> class的类型
      * @return 类的实例化
@@ -68,7 +78,6 @@ public class ClassUtil {
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(Class<?> clz) {
         try {
-            // deprecated in Java 9: return (T) clz.newInstance();
             return (T) clz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             log.error("newInstance error", e);
@@ -101,7 +110,7 @@ public class ClassUtil {
      * @return 类集合
      */
     public static Set<Class<?>> getPackageClass(String basePackage) {
-        URL url = getClassLoader().getResource(basePackage.replace(".", "/"));
+        URL url = getClassLoader().getResource(basePackage.replace(DOT, SLASH));
         if (null == url) {
             throw new RuntimeException("无法获取项目路径文件");
         }
@@ -119,7 +128,7 @@ public class ClassUtil {
                 return ((JarURLConnection) url.openConnection()).getJarFile()
                     .stream()
                     .filter(jarEntry -> jarEntry.getName().endsWith(".class"))
-                    .map(ClassUtil::getClassByJar)
+                    .map(CommonUtil::getClassByJar)
                     .collect(Collectors.toSet());
             }
             return Collections.emptySet();
@@ -138,11 +147,11 @@ public class ClassUtil {
      * @return 类
      */
     private static Class<?> getClassByPath(Path classPath, Path basePath, String basePackage) {
-        String packageName = classPath.toString().replace(basePath.toString(), "");
+        String packageName = classPath.toString().replace(basePath.toString(), EMPTY);
         String className = (basePackage + packageName)
-            .replace("/", ".")
-            .replace("\\", ".")
-            .replace(".class", "");
+            .replace(SLASH, DOT)
+            .replace("\\", DOT)
+            .replace(".class", EMPTY);
         // 如果 class 在根目录要去除最前面的。
         className = className.charAt(0) == '.' ? className.substring(1) : className;
         return loadClass(className);
@@ -157,7 +166,7 @@ public class ClassUtil {
     private static Class<?> getClassByJar(JarEntry jarEntry) {
         String jarEntryName = jarEntry.getName();
         // 获取类名
-        String className = jarEntryName.substring(0, jarEntryName.lastIndexOf(".")).replaceAll("/", ".");
+        String className = jarEntryName.substring(0, jarEntryName.lastIndexOf(DOT)).replaceAll(SLASH, DOT);
         return loadClass(className);
     }
 }

@@ -23,8 +23,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.ywh.spring.util.CommonUtil.EMPTY;
+import static com.ywh.spring.util.CommonUtil.SLASH;
+
 /**
- * Controller请求处理
+ * REST 请求处理
  *
  * @author ywh
  * @since 4/20/2021
@@ -32,21 +35,30 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ControllerHandler implements Handler {
     /**
-     * 请求信息和controller信息关系map
+     * 请求信息与 controller 的映射
      */
     private Map<PathInfo, ControllerInfo> pathControllerMap = new ConcurrentHashMap<>();
+
     /**
-     * bean容器
+     * Bean 容器
      */
     private BeanContainer beanContainer;
 
+    /**
+     *
+     */
     public ControllerHandler() {
         beanContainer = BeanContainer.getInstance();
-
         Set<Class<?>> mappingSet = beanContainer.getClassesByAnnotation(RequestMapping.class);
         this.initPathControllerMap(mappingSet);
     }
 
+    /**
+     *
+     * @param handlerChain {@link RequestHandlerChain}
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean handle(final RequestHandlerChain handlerChain) throws Exception {
         String method = handlerChain.getRequestMethod();
@@ -110,7 +122,6 @@ public class ControllerHandler implements Handler {
     }
 
     /**
-     * 初始化pathControllerMap
      *
      * @param mappingSet 被{@link RequestMapping}注解的类集合
      */
@@ -119,22 +130,21 @@ public class ControllerHandler implements Handler {
     }
 
     /**
-     * 添加controllerInfo到pathControllerMap中
      *
      * @param clz 被{@link RequestMapping}注解的类
      */
     private void addPathController(Class<?> clz) {
         RequestMapping requestMapping = clz.getAnnotation(RequestMapping.class);
         String basePath = requestMapping.value();
-        if (!basePath.startsWith("/")) {
-            basePath = "/" + basePath;
+        if (!basePath.startsWith(SLASH)) {
+            basePath = SLASH + basePath;
         }
         for (Method method : clz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(RequestMapping.class)) {
                 RequestMapping methodRequest = method.getAnnotation(RequestMapping.class);
                 String methodPath = methodRequest.value();
-                if (!methodPath.startsWith("/") && !"/".equals(basePath)) {
-                    methodPath = "/" + methodPath;
+                if (!methodPath.startsWith(SLASH) && !SLASH.equals(basePath)) {
+                    methodPath = SLASH + methodPath;
                 }
                 String url = basePath + methodPath;
                 Map<String, Class<?>> methodParams = this.getMethodParams(method);
@@ -159,7 +169,7 @@ public class ControllerHandler implements Handler {
      * @return 参数别名对应的参数类型
      */
     private Map<String, Class<?>> getMethodParams(Method method) {
-        Map<String, Class<?>> map = new HashMap<>();
+        Map<String, Class<?>> map = new HashMap<>(0);
         for (Parameter parameter : method.getParameters()) {
             RequestParam param = parameter.getAnnotation(RequestParam.class);
             // TODO: 不使用注解匹配参数名字
@@ -172,14 +182,14 @@ public class ControllerHandler implements Handler {
     }
 
     /**
-     * 获取HttpServletRequest中的参数
+     * 获取 HttpServletRequest 中的参数
      *
      * @param request HttpServletRequest
      * @return 参数别名对应的参数值
      */
     private Map<String, String> getRequestParams(HttpServletRequest request) {
-        Map<String, String> paramMap = new HashMap<>();
-        //GET和POST方法是这样获取请求参数的
+        Map<String, String> paramMap = new HashMap<>(0);
+        // GET、POST
         request.getParameterMap().forEach((paramName, paramsValues) -> {
             if (paramsValues != null) {
                 paramMap.put(paramName, paramsValues[0]);
@@ -239,10 +249,9 @@ public class ControllerHandler implements Handler {
      */
     private Object convert(Class<?> type, String value) {
         if (isPrimitive(type)) {
-            if (value == null || "".equals(value)) {
+            if (value == null || EMPTY.equals(value)) {
                 return primitiveNull(type);
             }
-
             if (type.equals(int.class) || type.equals(Integer.class)) {
                 return Integer.parseInt(value);
             } else if (type.equals(String.class)) {
@@ -266,6 +275,11 @@ public class ControllerHandler implements Handler {
         }
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     private boolean isPrimitive(Class<?> type) {
         return type == boolean.class
             || type == Boolean.class

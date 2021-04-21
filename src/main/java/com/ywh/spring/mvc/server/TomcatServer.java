@@ -13,6 +13,9 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 
+import static com.ywh.spring.util.CommonUtil.EMPTY;
+import static com.ywh.spring.util.CommonUtil.SLASH;
+
 /**
  * Tomcat 服务器
  *
@@ -24,10 +27,17 @@ public class TomcatServer implements Server {
 
     private Tomcat tomcat;
 
+    /**
+     *
+     */
     public TomcatServer() {
         new TomcatServer(SpringApplication.getConfiguration());
     }
 
+    /**
+     *
+     * @param configuration
+     */
     public TomcatServer(Configuration configuration) {
         try {
             this.tomcat = new Tomcat();
@@ -56,6 +66,10 @@ public class TomcatServer implements Server {
         }
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     public void startServer() throws Exception {
         tomcat.start();
@@ -65,11 +79,20 @@ public class TomcatServer implements Server {
         tomcat.getServer().await();
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Override
     public void stopServer() throws Exception {
         tomcat.stop();
     }
 
+    /**
+     *
+     * @param configuration
+     * @return
+     */
     private File getRootFolder(Configuration configuration) {
         try {
             File root;
@@ -80,10 +103,10 @@ public class TomcatServer implements Server {
                 .getLocation()
                 .toURI()
                 .getPath()
-                .replaceAll("\\\\", "/");
+                .replaceAll("\\\\", SLASH);
             int lastIndexOf = runningJarPath.lastIndexOf("/target/");
             if (lastIndexOf < 0) {
-                root = new File("");
+                root = new File(EMPTY);
             } else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }

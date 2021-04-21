@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DispatcherServlet 所有http请求都由此Servlet转发
+ * DispatcherServlet
+ * 转发 HTTP 请求
  *
  * @author ywh
  * @since 4/20/2021
@@ -21,17 +22,17 @@ public class DispatcherServlet extends HttpServlet {
     /**
      * 请求执行链
      */
-    private final List<Handler> HANDLER = new ArrayList<>();
+    private final List<Handler> HANDLER_CHAIN = new ArrayList<>();
 
     /**
      * 初始化Servlet
      */
     @Override
     public void init() {
-        HANDLER.add(new PreRequestHandler());
-        HANDLER.add(new SimpleUrlHandler(getServletContext()));
-        HANDLER.add(new JspHandler(getServletContext()));
-        HANDLER.add(new ControllerHandler());
+        HANDLER_CHAIN.add(new PreRequestHandler());
+        HANDLER_CHAIN.add(new SimpleUrlHandler(getServletContext()));
+        HANDLER_CHAIN.add(new JspHandler(getServletContext()));
+        HANDLER_CHAIN.add(new ControllerHandler());
     }
 
     /**
@@ -42,7 +43,7 @@ public class DispatcherServlet extends HttpServlet {
      */
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
-        RequestHandlerChain handlerChain = new RequestHandlerChain(HANDLER.iterator(), req, resp);
+        RequestHandlerChain handlerChain = new RequestHandlerChain(HANDLER_CHAIN.iterator(), req, resp);
         handlerChain.doHandlerChain();
         handlerChain.doRender();
     }

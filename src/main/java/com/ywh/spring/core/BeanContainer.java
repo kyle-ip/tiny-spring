@@ -5,7 +5,7 @@ import com.ywh.spring.core.annotation.Component;
 import com.ywh.spring.core.annotation.Controller;
 import com.ywh.spring.core.annotation.Repository;
 import com.ywh.spring.core.annotation.Service;
-import com.ywh.spring.util.ClassUtil;
+import com.ywh.spring.util.CommonUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,8 @@ import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import static com.ywh.spring.util.CommonUtil.EMPTY;
 
 /**
  * Bean 容器
@@ -89,7 +91,7 @@ public class BeanContainer {
      *
      */
     public void loadBeans() {
-        loadBeans("");
+        loadBeans(EMPTY);
     }
 
     /**
@@ -103,7 +105,7 @@ public class BeanContainer {
         }
 
         // 扫描根包下的所有类，判断其是否添加了组件注解，是则添加到集合中。
-        ClassUtil.getPackageClass(basePackage).stream()
+        CommonUtil.getPackageClass(basePackage).stream()
             .filter(clz -> {
                 for (Class<? extends Annotation> annotation : BEAN_ANNOTATIONS) {
                     if (clz.isAnnotationPresent(annotation)) {
@@ -112,7 +114,7 @@ public class BeanContainer {
                 }
                 return false;
             })
-            .forEach(clz -> beanMap.put(clz, ClassUtil.newInstance(clz)));
+            .forEach(clz -> beanMap.put(clz, CommonUtil.newInstance(clz)));
 
         // 添加成功修改标记为 true。
         isLoadBean = true;

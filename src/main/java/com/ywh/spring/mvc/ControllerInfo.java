@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * ControllerInfo 存储Controller相关信息
+ * Controller 相关信息
  *
  * @author ywh
  * @since 4/20/2021
@@ -18,7 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ControllerInfo {
     /**
-     * controller类
+     * Controller 类
      */
     private Class<?> controllerClass;
 

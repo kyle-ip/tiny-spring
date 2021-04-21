@@ -8,8 +8,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 
 /**
- * 普通url请求执行
- * 主要处理静态资源
+ * 普通请求执行（处理静态资源）
  *
  * @author ywh
  * @since 4/20/2021
@@ -29,6 +28,10 @@ public class SimpleUrlHandler implements Handler {
      */
     private RequestDispatcher defaultServlet;
 
+    /**
+     *
+     * @param servletContext
+     */
     public SimpleUrlHandler(ServletContext servletContext) {
         defaultServlet = servletContext.getNamedDispatcher(TOMCAT_DEFAULT_SERVLET);
 
@@ -39,7 +42,12 @@ public class SimpleUrlHandler implements Handler {
         log.info("The default servlet for serving static resource is [{}]", TOMCAT_DEFAULT_SERVLET);
     }
 
-
+    /**
+     *
+     * @param handlerChain {@link RequestHandlerChain}
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean handle(final RequestHandlerChain handlerChain) throws Exception {
         if (isStaticResource(handlerChain.getRequestPath())) {

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.PrintWriter;
 
 /**
- * 渲染json
+ * 渲染 JSON
  *
  * @author ywh
  * @since 4/20/2021

@@ -4,7 +4,7 @@ package com.ywh.spring.mvc.render;
 import com.ywh.spring.mvc.RequestHandlerChain;
 
 /**
- * 默认渲染 200
+ * 渲染 200
  *
  * @author ywh
  * @since 4/20/2021
